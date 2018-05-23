@@ -2,9 +2,10 @@
   "name": "query-400",
   "version": "1.0.0",
   "description": "Connection to query data on the AS400",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --config webpack.config.js"
   },
   "author": "Ahiro Guzman",
   "license": "MIT",
