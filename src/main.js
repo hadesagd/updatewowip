@@ -87,6 +87,7 @@ function updateDMWip(filename) {
         .catch(function(error) {
             fs.appendFile('errors.log', Date.toString() + ': ' + error.toString(), function (err) {
                 if (err) throw err;
-            });
+            }
+            );
         });
-}
+}       

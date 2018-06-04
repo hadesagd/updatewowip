@@ -13,6 +13,7 @@ fs.readdirSync('node_modules')
 module.exports = {
     entry: './src/main.js',
     target: 'node',
+    mode: 'development',
     output: {
         filename: 'updatewip.js',
         path: path.resolve(__dirname, 'dist')
