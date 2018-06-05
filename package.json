@@ -4,7 +4,8 @@
   "description": "Connection to query data on the AS400",
   "private": true,
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "start": "node ./dist/updatewip.js"
   },
   "author": "Ahiro Guzman",
   "license": "MIT",
