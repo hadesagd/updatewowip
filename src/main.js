@@ -1,9 +1,9 @@
 /* This is a file to make a connection to the DBS */ 
 
-var nodeJt400 = require('node-jt400');
+const nodeJt400 = require('node-jt400');
 const fs = require('fs');
-var XLSX = require('xlsx');
-var axios = require('axios');
+const XLSX = require('xlsx');
+const axios = require('axios');
 
 // La configuracion para la conexion con el DBS
 
@@ -19,20 +19,20 @@ const pool = nodeJt400.pool(config);
 
 // El SQL statement para obtener las ordenes de trabajo en proceso para M&E - sin notas para que no se complique
 
-const statement = 'SELECT wono, cuno, cunm, eqmfmd, eqmfsn FROM libr46.wophdrs0 WHERE STNO IN (\'65\', \'66\', \'67\', \'68\', \'69\') AND ACTI=? ORDER BY wono';
-const queryvars = ['O'];
+const statement = 'SELECT concat(trim(a.wono), concat( \'-\', b.wosgno)) as wono, a.cuno, a.cunm, a.eqmfmd, a.eqmfsn FROM libr46.wophdrs0 a LEFT JOIN libr46.wopsegs0 b on a.wono=b.wono WHERE STNO IN (\'65\', \'66\', \'67\', \'68\', \'69\') AND ACTI=? ORDER BY wono';
+const queryconsts = ['O'];
 
 // LLamado a la funcion de se encarga de hacer la actualizacion
 
-downloadWip(pool, statement, queryvars);
+downloadWip(pool, statement, queryconsts);
 
 // El grupo de funciones de ayuda que se encargan de hacer la tarea
 // La funcion principal que agrupa todas las actividades
 
-function downloadWip(pool, statement, queryvars) {
-    pool.query(statement, queryvars)
+function downloadWip(pool, statement, queryconsts) {
+    pool.query(statement, queryconsts)
         .then(function (result) {
-            updateDMWip(writeExcelFile(result)); 
+            updateDMWip(writeExcelFile(result));
         })
         .fail(function (error) {
             fs.appendFile('errors.log', Date.toString() + ': ' + error.toString(), function (err) {
@@ -46,8 +46,8 @@ function downloadWip(pool, statement, queryvars) {
 
 function writeExcelFile(wipData) {
     const xlFileName = 'dmWipWo.xlsx';
-    var ws = XLSX.utils.json_to_sheet(wipData);
-    var wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(wipData);
+    const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'WORK_ORDERS');
     XLSX.writeFile(wb, xlFileName);
     return xlFileName;
@@ -58,10 +58,10 @@ function writeExcelFile(wipData) {
 // es el que lo escribe en disco. Se deberia hacer?
 
 function updateDMWip(filename) {
-    var dmWipWo = fs.readFileSync(filename);
-    var payload = new Buffer(dmWipWo).toString('base64');
-    var dmUrl = ' https://www.devicemagic.com/api/resources/40339.json';
-    var updateObject = {
+    const dmWipWo = fs.readFileSync(filename);
+    const payload = new Buffer(dmWipWo).toString('base64');
+    const dmUrl = ' https://www.devicemagic.com/api/resources/40339.json';
+    const updateObject = {
         resource: {
             file: {
                 file_name: filename,
@@ -70,13 +70,13 @@ function updateDMWip(filename) {
             }
         }
     };
-    var config = {
+    const config = {
         url: dmUrl,
         method: 'put',
         headers: { 'Authorization': 'Basic X3kyQVBncWZ2OHBLQmRoaGJucTI6eA==' },
         data: updateObject,
     };
-    
+
     // Empuja el archivo codificado a la base de datos de Device Magic
     // En caso de error deberia escribir algo en un archivo de texto de registros
 
@@ -90,4 +90,4 @@ function updateDMWip(filename) {
             }
             );
         });
-}       
+}
