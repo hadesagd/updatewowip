@@ -1,5 +1,5 @@
 {
-  "name": "updateWIPForDM",
+  "name": "update-wip-for-dm",
   "version": "1.0.0",
   "description": "Connection to query data on the AS400",
   "private": true,
