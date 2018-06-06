@@ -19,7 +19,7 @@ const pool = nodeJt400.pool(config);
 
 // El SQL statement para obtener las ordenes de trabajo en proceso para M&E - sin notas para que no se complique
 
-const statement = 'SELECT concat(trim(a.wono), concat( \'-\', b.wosgno)) as wono, a.cuno, a.cunm, a.eqmfmd, a.eqmfsn FROM libr46.wophdrs0 a LEFT JOIN libr46.wopsegs0 b on a.wono=b.wono WHERE STNO IN (\'65\', \'66\', \'67\', \'68\', \'69\') AND ACTI=? ORDER BY wono';
+const statement = 'SELECT CONCAT(CONCAT(TRIM(A.WONO),\'-\'), B.WOSGNO) AS WONO, a.cuno, a.cunm, a.eqmfmd, a.eqmfsn FROM libr46.wophdrs0 a LEFT JOIN libr46.wopsegs0 b on a.wono=b.wono WHERE STNO IN (\'65\', \'66\', \'67\', \'68\', \'69\') AND A.ACTI=? ORDER BY wono';
 const queryvars = ['O'];
 
 // LLamado a la funcion de se encarga de hacer la actualizacion
