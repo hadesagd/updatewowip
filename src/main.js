@@ -1,4 +1,4 @@
-/* This is a file to make a connection to the DBS */ 
+/* This is a file to make a connection to the DBS */
 
 const nodeJt400 = require('node-jt400');
 const fs = require('fs');
@@ -10,7 +10,7 @@ const axios = require('axios');
 const config = {
     host: '10.108.168.130',
     user: 'xupr46agd',
-    password: 'agd@174q'
+    password: 'agd@193q'
 };
 
 // Se crea el pool de conexiones con el uso de la configuracion
@@ -81,10 +81,10 @@ function updateDMWip(filename) {
     // En caso de error deberia escribir algo en un archivo de texto de registros
 
     axios(config)
-        .then(function(response) {
+        .then(function (response) {
             return response.status;
         })
-        .catch(function(error) {
+        .catch(function (error) {
             fs.appendFile('errors.log', Date.toString() + ': ' + error.toString(), function (err) {
                 if (err) throw err;
             }
